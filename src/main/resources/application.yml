@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: library-couchdb
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+app:
+  couch:
+    url: ${COUCH_URL:http://localhost:5984}
+    database: ${COUCH_DATABASE:library}
+    username: ${COUCH_USER:library}
+    password: ${COUCH_PASSWORD:library}
+  etcd:
+    endpoints: ${ETCD_ENDPOINTS:http://localhost:2379}
+  etcd-timeout-millis: 3000
+  settings-cache-ttl-seconds: ${CACHE_TTL:60}
+server:
+  port: ${SERVER_PORT:8080}

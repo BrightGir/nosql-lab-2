@@ -1,0 +1,11 @@
+build/
+.gradle/
+.idea/
+*.iml
+*.db
+.DS_Store
+/tmp/
+__pycache__/
+*.pyc
+.venv/
+tmp/

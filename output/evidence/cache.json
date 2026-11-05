@@ -1,0 +1,6 @@
+{
+  "service_update_invalidated": true,
+  "cached_after_direct_write": 4,
+  "loaded_after_ttl": 7,
+  "observed_wait_seconds": 60.79
+}

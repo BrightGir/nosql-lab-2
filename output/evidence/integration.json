@@ -1,0 +1,361 @@
+{
+  "stale_revision": {
+    "message": "Stale revision; reload event",
+    "error": "conflict"
+  },
+  "explain": {
+    "dbname": "library",
+    "index": {
+      "ddoc": "_design/event-search",
+      "name": "by-type-updated",
+      "type": "json",
+      "partitioned": false,
+      "def": {
+        "fields": [
+          {
+            "kind": "asc"
+          },
+          {
+            "type": "asc"
+          },
+          {
+            "updatedAt": "asc"
+          },
+          {
+            "_id": "asc"
+          }
+        ]
+      }
+    },
+    "partitioned": false,
+    "selector": {
+      "$and": [
+        {
+          "kind": {
+            "$eq": "event"
+          }
+        },
+        {
+          "type": {
+            "$eq": "test-763c80b4-8d16-4e8b-9255-d4e899bccb32"
+          }
+        },
+        {
+          "state": {
+            "$ne": "DELETED"
+          }
+        },
+        {
+          "updatedAt": {
+            "$gte": "1970-01-01T00:00:00.000000000Z"
+          }
+        }
+      ]
+    },
+    "opts": {
+      "use_index": [
+        "event-search",
+        "by-type-updated"
+      ],
+      "bookmark": "nil",
+      "limit": 25,
+      "skip": 0,
+      "sort": {
+        "kind": "asc",
+        "type": "asc",
+        "updatedAt": "asc",
+        "_id": "asc"
+      },
+      "fields": [],
+      "partition": "",
+      "r": 1,
+      "conflicts": false,
+      "stale": false,
+      "update": true,
+      "stable": false,
+      "execution_stats": true,
+      "allow_fallback": true
+    },
+    "limit": 25,
+    "skip": 0,
+    "fields": [],
+    "index_candidates": [
+      {
+        "index": {
+          "ddoc": "_design/orders-by-event",
+          "name": "orders-by-event",
+          "type": "json",
+          "partitioned": false,
+          "def": {
+            "fields": [
+              {
+                "kind": "asc"
+              },
+              {
+                "eventId": "asc"
+              }
+            ]
+          }
+        },
+        "analysis": {
+          "usable": false,
+          "reasons": [
+            {
+              "name": "field_mismatch"
+            }
+          ],
+          "ranking": 1,
+          "covering": false
+        }
+      },
+      {
+        "index": {
+          "ddoc": "_design/orders-by-draft",
+          "name": "orders-by-draft",
+          "type": "json",
+          "partitioned": false,
+          "def": {
+            "fields": [
+              {
+                "kind": "asc"
+              },
+              {
+                "draftId": "asc"
+              }
+            ]
+          }
+        },
+        "analysis": {
+          "usable": false,
+          "reasons": [
+            {
+              "name": "field_mismatch"
+            }
+          ],
+          "ranking": 1,
+          "covering": false
+        }
+      },
+      {
+        "index": {
+          "ddoc": "_design/by-kind",
+          "name": "by-kind",
+          "type": "json",
+          "partitioned": false,
+          "def": {
+            "fields": [
+              {
+                "kind": "asc"
+              }
+            ]
+          }
+        },
+        "analysis": {
+          "usable": false,
+          "reasons": [
+            {
+              "name": "sort_order_mismatch"
+            }
+          ],
+          "ranking": 1,
+          "covering": false
+        }
+      },
+      {
+        "index": {
+          "ddoc": null,
+          "name": "_all_docs",
+          "type": "special",
+          "def": {
+            "fields": [
+              {
+                "_id": "asc"
+              }
+            ]
+          }
+        },
+        "analysis": {
+          "usable": false,
+          "reasons": [
+            {
+              "name": "field_mismatch"
+            }
+          ],
+          "ranking": 1,
+          "covering": null
+        }
+      }
+    ],
+    "selector_hints": [
+      {
+        "type": "json",
+        "indexable_fields": [
+          "kind",
+          "type",
+          "updatedAt"
+        ],
+        "unindexable_fields": [
+          "state"
+        ]
+      }
+    ],
+    "mrargs": {
+      "include_docs": true,
+      "view_type": "map",
+      "reduce": false,
+      "partition": null,
+      "start_key": [
+        "event",
+        "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+        "1970-01-01T00:00:00.000000000Z"
+      ],
+      "end_key": [
+        "event",
+        "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+        "<MAX>"
+      ],
+      "direction": "fwd",
+      "stable": false,
+      "update": true,
+      "conflicts": "undefined"
+    },
+    "covering": false
+  },
+  "search": {
+    "docs": [
+      {
+        "_id": "event:d2828d6f-6ed8-4439-8c99-32a1278dd276",
+        "_rev": "2-10b8135f160ad0c5141d82e9343a7a79",
+        "id": "d2828d6f-6ed8-4439-8c99-32a1278dd276",
+        "title": "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+        "type": "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+        "startsAt": "2026-12-01T10:00:00Z",
+        "capacity": 20,
+        "createdAt": "2026-11-01T11:59:30.757158375Z",
+        "kind": "event",
+        "schemaVersion": 2,
+        "updatedAt": "2026-11-01T11:59:30.815940845Z",
+        "state": "CLOSED",
+        "lastModified": {
+          "by": "alice",
+          "action": "UPDATE",
+          "state": "CLOSED",
+          "at": "2026-11-01T11:59:30.815940845Z"
+        },
+        "history": [
+          {
+            "by": "system",
+            "action": "CREATE",
+            "state": "OPEN",
+            "at": "2026-11-01T11:59:30.763818774Z"
+          },
+          {
+            "by": "alice",
+            "action": "UPDATE",
+            "state": "CLOSED",
+            "at": "2026-11-01T11:59:30.815940845Z"
+          }
+        ]
+      }
+    ],
+    "bookmark": "g1AAAADleJyVjksKAjEQRMOg4MojuFdoSXc-05lzuHIjJh3RcVRwguDtnQgewN2jqHrUoJRqzo2o5ViOz3LN74M80kVuU77Jr3wvnRATiz-Bz8JgrQnAKQQwdERqWYRaXw2Ln2GYtrMqmH8FldYljwVabxLraIEFPdjMEQI5BzJhCDGlaKi2V6TJAyJo3CF2LnRGbxldsJqt2__5re8_j9E53w",
+    "execution_stats": {
+      "total_keys_examined": 1,
+      "total_docs_examined": 1,
+      "total_quorum_docs_examined": 0,
+      "results_returned": 1,
+      "execution_time_ms": 1.46
+    }
+  },
+  "actions": {
+    "rows": [
+      {
+        "key": [
+          "alice",
+          "DELETE"
+        ],
+        "value": 2
+      },
+      {
+        "key": [
+          "alice",
+          "UPDATE"
+        ],
+        "value": 3
+      },
+      {
+        "key": [
+          "cache-77411048b87447349ca527f4551c6b90",
+          "CREATE"
+        ],
+        "value": 1
+      },
+      {
+        "key": [
+          "cache-77411048b87447349ca527f4551c6b90",
+          "UPDATE"
+        ],
+        "value": 2
+      },
+      {
+        "key": [
+          "system",
+          "CREATE"
+        ],
+        "value": 6
+      },
+      {
+        "key": [
+          "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+          "CREATE"
+        ],
+        "value": 2
+      },
+      {
+        "key": [
+          "test-763c80b4-8d16-4e8b-9255-d4e899bccb32",
+          "UPDATE"
+        ],
+        "value": 1
+      },
+      {
+        "key": [
+          "test-bbb1958a-c0bb-40c9-965e-ce95941060b3",
+          "CREATE"
+        ],
+        "value": 2
+      },
+      {
+        "key": [
+          "test-bbb1958a-c0bb-40c9-965e-ce95941060b3",
+          "UPDATE"
+        ],
+        "value": 1
+      },
+      {
+        "key": [
+          "test-d88712c5-c7c6-4bc3-ac4b-af55c798239a",
+          "CREATE"
+        ],
+        "value": 2
+      },
+      {
+        "key": [
+          "test-d88712c5-c7c6-4bc3-ac4b-af55c798239a",
+          "UPDATE"
+        ],
+        "value": 1
+      }
+    ]
+  },
+  "validation": {
+    "error": "forbidden",
+    "reason": "Invalid event"
+  },
+  "replication": {
+    "primary": "2-10b8135f160ad0c5141d82e9343a7a79",
+    "replica": "2-10b8135f160ad0c5141d82e9343a7a79"
+  },
+  "draft_ttl": "expired",
+  "result": "PASS"
+}

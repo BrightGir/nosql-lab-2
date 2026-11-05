@@ -1,0 +1,71 @@
+services:
+  couch1:
+    image: couchdb:3.5.1
+    entrypoint: ["/bin/sh", "-c", "cp /etc/lab2-single-node.ini /opt/couchdb/etc/local.d/single-node.ini && exec /docker-entrypoint.sh /opt/couchdb/bin/couchdb"]
+    environment: &couch-env
+      COUCHDB_USER: library
+      COUCHDB_PASSWORD: library
+    ports: ["127.0.0.1:5984:5984"]
+    volumes:
+      - couch1-data:/opt/couchdb/data
+      - ./couchdb/single-node.ini:/etc/lab2-single-node.ini:ro
+    healthcheck: &couch-health
+      test: ["CMD", "curl", "-fsS", "http://localhost:5984/_up"]
+      interval: 3s
+      timeout: 2s
+      retries: 30
+  couch2:
+    image: couchdb:3.5.1
+    entrypoint: ["/bin/sh", "-c", "cp /etc/lab2-single-node.ini /opt/couchdb/etc/local.d/single-node.ini && exec /docker-entrypoint.sh /opt/couchdb/bin/couchdb"]
+    environment: *couch-env
+    ports: ["127.0.0.1:5985:5984"]
+    volumes:
+      - couch2-data:/opt/couchdb/data
+      - ./couchdb/single-node.ini:/etc/lab2-single-node.ini:ro
+    healthcheck: *couch-health
+  setup:
+    image: python:3.12-alpine
+    working_dir: /workspace
+    volumes:
+      - ./scripts:/workspace/scripts:ro
+      - ./couchdb:/workspace/couchdb:ro
+    environment:
+      COUCH_URL: http://couch1:5984
+      REPLICA_URL: http://couch2:5984
+      REPLICATION_SOURCE: http://couch1:5984
+      REPLICATION_TARGET: http://couch2:5984
+    command: ["python", "scripts/couch_admin.py", "setup"]
+    depends_on:
+      couch1: {condition: service_healthy}
+      couch2: {condition: service_healthy}
+  etcd:
+    image: quay.io/coreos/etcd:v3.6.14
+    command:
+      - /usr/local/bin/etcd
+      - --name=node1
+      - --data-dir=/etcd-data
+      - --listen-client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://etcd:2379
+      - --listen-peer-urls=http://0.0.0.0:2380
+      - --initial-advertise-peer-urls=http://etcd:2380
+      - --initial-cluster=node1=http://etcd:2380
+    ports: ["127.0.0.1:2379:2379"]
+    volumes: ["etcd-data:/etcd-data"]
+    healthcheck:
+      test: ["CMD", "etcdctl", "--endpoints=http://127.0.0.1:2379", "endpoint", "health"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+  app:
+    build: .
+    environment:
+      COUCH_URL: http://couch1:5984
+      ETCD_ENDPOINTS: http://etcd:2379
+    ports: ["127.0.0.1:18080:8080"]
+    depends_on:
+      setup: {condition: service_completed_successfully}
+      etcd: {condition: service_healthy}
+volumes:
+  couch1-data:
+  couch2-data:
+  etcd-data:

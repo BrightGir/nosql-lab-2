@@ -1,0 +1,12 @@
+build/
+.gradle/
+.idea/
+backups/
+docs/
+.DS_Store
+tmp/
+output/
+__pycache__/
+.venv
+tmp
+output

@@ -1,12 +1,10 @@
+.git/
 build/
 .gradle/
 .idea/
-backups/
-docs/
+.venv/
 .DS_Store
 tmp/
 output/
 __pycache__/
-.venv
-tmp
-output
+*.pyc

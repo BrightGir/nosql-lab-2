@@ -4,8 +4,7 @@ build/
 *.iml
 *.db
 .DS_Store
-/tmp/
+tmp/
 __pycache__/
 *.pyc
 .venv/
-tmp/
